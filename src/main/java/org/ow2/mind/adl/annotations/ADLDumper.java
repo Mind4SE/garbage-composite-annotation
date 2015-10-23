@@ -359,8 +359,19 @@ public class ADLDumper {
 
 			writeAnnotations(itf, true);
 
+			String itfRole = itf.getRole();
+			String role = null;
+			if (TypeInterface.SERVER_ROLE.equals(itfRole))
+				role = "provides";
+			if (TypeInterface.CLIENT_ROLE.equals(itfRole))
+				role = "requires";
+			if (ASTHelper.INPUT_ROLE.equals(itfRole))
+				role = "input";
+			if (ASTHelper.OUTPUT_ROLE.equals(itfRole))
+				role = "output";
+			
 			outputFileBufferedWriter.write(tabPrefix
-					+ (itf.getRole() ==  TypeInterface.SERVER_ROLE ? "provides " : "requires ")
+					+ role
 					+ itf.getSignature() + " "
 					+ (itf.getContingency() != null ? itf.getContingency() : "")
 					+ "as " + itf.getName());
@@ -398,7 +409,20 @@ public class ADLDumper {
 			String line = "";
 			if (inBody)
 				line = line + tab;
-			line = line + "@" + currAnno.getClass().getSimpleName();
+			
+			try {
+				// Check if default toString() or overriden
+				if (currAnno.getClass().getMethod("toString").getDeclaringClass() == Object.class)
+					line = line + "@" + currAnno.getClass().getSimpleName();
+				else
+					line = line + currAnno.toString();
+			} catch (NoSuchMethodException e) {
+				// Cannot happen, since everything is Object and Java objects all have toString().
+			} catch (SecurityException e) {
+				// If this happens, introspection is forbidden with your VM, which would be weird
+				// for a VM to run a MIND compiler without...?
+				e.printStackTrace();
+			}
 
 			outputFileBufferedWriter.write(line);
 			outputFileBufferedWriter.newLine();

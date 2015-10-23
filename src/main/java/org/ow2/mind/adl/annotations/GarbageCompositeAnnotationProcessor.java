@@ -322,6 +322,9 @@ AbstractADLLoaderAnnotationProcessor {
 					// New component instance must have arguments information from the original definition reference we just modified
 					newComp.setDefinitionReference(newCompDefRef);
 
+					// Transfer Component annotations
+					applyAnnotations(currLevel2Comp, newComp);
+					
 					// Add to level 0
 					level0DefAsComponentContainer.addComponent(newComp);
 				}
@@ -428,6 +431,9 @@ AbstractADLLoaderAnnotationProcessor {
 					newBinding.setToInterface(currLevel2ThisBinding.getToInterface());
 					newBinding.setToInterfaceNumber(currLevel2ThisBinding.getToInterfaceNumber());
 
+					// transfer level 2 annotation to the new binding
+					applyAnnotations(currLevel2ThisBinding, newBinding);
+					
 					// new binding goes to level 0
 					level0DefAsBindingContainer.addBinding(newBinding);
 				}
