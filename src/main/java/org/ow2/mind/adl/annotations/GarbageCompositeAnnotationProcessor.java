@@ -322,6 +322,9 @@ AbstractADLLoaderAnnotationProcessor {
 					// New component instance must have arguments information from the original definition reference we just modified
 					newComp.setDefinitionReference(newCompDefRef);
 
+					// Transfer decorations
+					newComp.astSetDecorations(currLevel2Comp.astGetDecorations());
+					
 					// Transfer Component annotations
 					applyAnnotations(currLevel2Comp, newComp);
 					
