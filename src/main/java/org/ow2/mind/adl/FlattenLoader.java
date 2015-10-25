@@ -8,6 +8,7 @@ import org.ow2.mind.adl.AbstractDelegatingLoader;
 import org.ow2.mind.adl.annotations.ADLDumper;
 import org.ow2.mind.adl.annotations.GarbageCompositeAnnotationProcessor;
 import org.ow2.mind.adl.ast.ComponentContainer;
+import org.ow2.mind.adl.cli.FlatGenAnnoOptionHandler;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -36,9 +37,9 @@ public class FlattenLoader extends AbstractDelegatingLoader {
 		
 		processor.runFlatten(d, context);
 		
-		// Debug: enable following lines to dump the flattened architecture
+		// Serialize output, with or without annotations according to --flatten-serialize-annotations
 		ADLDumper dumper = injector.getInstance(ADLDumper.class);
-		dumper.dump(d, context, false /* Do not try to keep annotations during the merge serialization */);
+		dumper.dump(d, context, FlatGenAnnoOptionHandler.isFlattenSerializationAnnotationsEnabled(context));
 		
 		// Return the resulting tree
 		return d;

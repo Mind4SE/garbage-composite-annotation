@@ -38,6 +38,12 @@
 			id="org.ow2.mind.garbagecomposite-annotations.Flatten"
 			longName="flatten"
 			description="Enable architecture tree flattening (remove composite levels)" />
+			
+		<cmdFlag
+			id="org.ow2.mind.garbagecomposite-annotations.FlattenSerialize"
+			longName="flatten-serialize-annotations"
+			description="Activate annotations serialization during --flatten"
+			handler="org.ow2.mind.adl.cli.FlatGenAnnoOptionHandler"/>
 	</extension>
 	
 	<extension
